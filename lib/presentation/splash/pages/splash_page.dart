@@ -39,7 +39,6 @@ class _SplashPageState extends State<SplashPage> {
   void _nextPage() async {
     final String token = AuthLocalDatasourceImpl(await SharedPreferences.getInstance())
         .getToken('appToken');
-    print("tokeeeeeeeeeeeeeeeeeeen $token");
     String route = token != null ? Routes.home : Routes.login;
     Future.delayed(Duration(seconds: 1),
         () => Navigator.of(context).pushReplacementNamed(route));
