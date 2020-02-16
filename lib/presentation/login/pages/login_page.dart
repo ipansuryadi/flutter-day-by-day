@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mymy/common/routes/routes.dart';
-import 'package:mymy/presentation/splash/pages/splash_page.dart';
+import 'package:mymy/data/auth/datasources/auth_local_datasource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -46,19 +46,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _printLatestValue() {
-    print("::::::::::: ${tokenController.text}");
-  }
-
   void _submitForm() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('appToken', tokenController.text);
-    _printLatestValue();
+    final authLocalDatasourceImpl =
+        AuthLocalDatasourceImpl(await SharedPreferences.getInstance());
+    authLocalDatasourceImpl.setToken('appToken', tokenController.text);
+    _isLoggedIn(context);
   }
 
   void _isLoggedIn(context) async {
-    String route = await SplashPage.authRoute();
-    if(route==Routes.home){
+    final authLocalDatasourceImpl =
+        AuthLocalDatasourceImpl(await SharedPreferences.getInstance());
+    final token = authLocalDatasourceImpl.getToken('appToken');
+    if (token != null) {
       Navigator.of(context).pushReplacementNamed(Routes.home);
     }
   }

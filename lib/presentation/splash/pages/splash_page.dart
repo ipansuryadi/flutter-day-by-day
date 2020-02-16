@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mymy/common/routes/routes.dart';
+import 'package:mymy/data/auth/datasources/auth_local_datasource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
@@ -8,19 +9,10 @@ class SplashPage extends StatefulWidget {
   @override
   _SplashPageState createState() => _SplashPageState();
 
-  static Future<String> authRoute() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool checkToken = prefs.containsKey('appToken');
-    String route = Routes.login;
-    if (checkToken) {
-      route = Routes.home;
-    }
-    return route;
-  }
+
 }
 
 class _SplashPageState extends State<SplashPage> {
-
   @override
   void initState() {
     _nextPage();
@@ -35,13 +27,20 @@ class _SplashPageState extends State<SplashPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Image.asset('assets/images/bunga.png'),
-          Text("Video\nApp",textAlign: TextAlign.center,)
-      ],),
+          Text(
+            "Video\nApp",
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
     );
   }
 
   void _nextPage() async {
-    String route = await SplashPage.authRoute();
+    final String token = AuthLocalDatasourceImpl(await SharedPreferences.getInstance())
+        .getToken('appToken');
+    print("tokeeeeeeeeeeeeeeeeeeen $token");
+    String route = token != null ? Routes.home : Routes.login;
     Future.delayed(Duration(seconds: 1),
         () => Navigator.of(context).pushReplacementNamed(route));
   }
