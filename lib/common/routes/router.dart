@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mymy/common/routes/routes.dart';
+import 'package:mymy/presentation/about/about_page.dart';
 import 'package:mymy/presentation/home/pages/home_page.dart';
 import 'package:mymy/presentation/login/pages/login_page.dart';
 import 'package:mymy/presentation/not_found/not_found_page.dart';
@@ -11,6 +12,7 @@ abstract class Router{
     Routes.splash:(BuildContext context)=>SplashPage(),
     Routes.login:(BuildContext context)=>LoginPage(),
     Routes.home:(BuildContext context)=>HomePage(),
+    Routes.about:(BuildContext context)=>AboutPage(),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings){
